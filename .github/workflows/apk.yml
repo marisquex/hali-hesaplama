@@ -22,14 +22,21 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Android Yapilandirmasi
-        run: flutter create . --platforms android
+      - name: Projeyi Hazirla ve Derle
+        run: |
+          # Temiz bir Flutter projesi oluştur
+          flutter create --org com.afitashali --project-name afitashali app_build
+          
+          # Bizim yazdığımız kod dosyasını içine kopyala
+          cp lib/main.dart app_build/lib/main.dart
+          
+          # Proje dizinine geç ve derle
+          cd app_build
+          flutter pub get
+          flutter build apk --release
 
-      - name: APK Derle
-        run: flutter build apk --release
-
-      - name: APK Yükle
+      - name: APK Yukle
         uses: actions/upload-artifact@v4
         with:
-          name: hali-hesaplayici-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: Afitashali-APK
+          path: app_build/build/app/outputs/flutter-apk/app-release.apk
