@@ -11,34 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Java Kurulumu
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Android SDK Kurulumu
-        uses: android-actions/setup-android@v3
-
       - name: Flutter Kurulumu
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Android Lisanslarini Onayla
-        run: yes | flutter doctor --android-licenses || true
-
-      - name: Projeyi Sifirdan Kur ve Derle
+      - name: Derle
         run: |
-          # 1. Tam ve temiz proje olustur
           flutter create --org com.afitashali --project-name afitashali clean_app
-          
-          # 2. Kod dosyamizi projeye kopyala
           cp lib/main.dart clean_app/lib/main.dart
-          
-          # 3. Projeye gir, paketleri al ve derle
           cd clean_app
-          flutter pub get
           flutter build apk --debug
 
       - name: APK Yukle
